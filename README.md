@@ -1,0 +1,1 @@
+Welcome to **StoryLine.Rest.Coverage** tool. It allows to measure coverage of **StoryLine.Rest** tests.

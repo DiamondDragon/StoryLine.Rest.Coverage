@@ -1,0 +1,50 @@
+﻿using System;
+using System.IO;
+using LightInject;
+using StoryLine.Rest.Coverage.Services;
+using StoryLine.Rest.Coverage.Services.Analyzers.Helpers;
+using StoryLine.Rest.Coverage.Services.Content;
+using StoryLine.Rest.Coverage.Services.Factories;
+using StoryLine.Rest.Coverage.Services.Parsing.Responses;
+using StoryLine.Rest.Coverage.Services.Parsing.Swagger;
+
+namespace StoryLine.Rest.Coverage
+{
+    internal class Program
+    {
+        private static void Main(string[] args)
+        {
+            if (args.Length != 3)
+            {
+                Console.WriteLine("Application expests two parameters: <swagger location> <log file> <output>");
+                return;
+            }
+
+            var swaggerLocation = args[0];
+            var responseLogLocation = args[1];
+            var outputFileName = args[2];
+
+            var container = new ServiceContainer();
+
+            container.Register(x => File.Exists(swaggerLocation) ? new FileContentProvider(swaggerLocation) : (ISwaggerProvider)new WebContentProvider(swaggerLocation));
+            container.Register(x => File.Exists(swaggerLocation) ? new FileContentProvider(responseLogLocation) : (IResponseLogProvider)new WebContentProvider(responseLogLocation));
+            container.Register<IReportPersister>(x => new ReportPersister(outputFileName, x.GetInstance<IJsonSerializer>()));
+
+            container.Register<ICoverageCalculator, CoverageCalculator>();
+            container.Register<ISwaggerParser, SwaggerParser>();
+            container.Register<IJsonSerializer, JsonSerializer>();
+            container.Register<IResponseLogParser, ResponseLogParser>();
+            container.Register<IResponseLogParser, ResponseLogParser>();
+            container.Register<IParameterAnalyzerFactory, ParameterAnalyzerFactory>();
+            container.Register<IRequestMatcherFactory, RequestMatcherFactory>();
+            container.Register<IResponseStatusCodeAnalyzerFactory, ResponseStatusCodeAnalyzerFactory>();
+            container.Register<IContentAnalyzerFactory, ContentAnalyzerFactory>();
+            container.Register<IPathPatternToRegexConverter, PathPatternToRegexConverter>(new PerContainerLifetime());
+
+            container.Register<IApiAnalyzerFactory, ApiAnalyzerFactory>();
+            container.Register<IOperationAnalyzerFactory, OperationAnalyzerFactory>();
+
+            container.GetInstance<ICoverageCalculator>().Calculate().Wait();
+        }
+    }
+}
