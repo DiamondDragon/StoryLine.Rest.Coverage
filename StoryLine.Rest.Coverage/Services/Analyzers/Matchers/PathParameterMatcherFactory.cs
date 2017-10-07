@@ -1,8 +1,7 @@
 ﻿using System;
 using StoryLine.Rest.Coverage.Services.Analyzers.Helpers;
-using StoryLine.Rest.Coverage.Services.Analyzers.Matchers;
 
-namespace StoryLine.Rest.Coverage.Services.Analyzers
+namespace StoryLine.Rest.Coverage.Services.Analyzers.Matchers
 {
     public class PathParameterMatcherFactory : IPathParameterMatcherFactory
     {
