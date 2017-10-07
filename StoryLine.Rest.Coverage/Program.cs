@@ -2,6 +2,7 @@
 using System.IO;
 using LightInject;
 using StoryLine.Rest.Coverage.Services;
+using StoryLine.Rest.Coverage.Services.Analyzers;
 using StoryLine.Rest.Coverage.Services.Analyzers.Helpers;
 using StoryLine.Rest.Coverage.Services.Content;
 using StoryLine.Rest.Coverage.Services.Factories;
@@ -48,6 +49,8 @@ namespace StoryLine.Rest.Coverage
             container.Register<IHeaderParameterMatcher, HeaderParameterMatcher>(new PerContainerLifetime());
             container.Register<IBodyParameterMatcher, BodyParameterMatcher>(new PerContainerLifetime());
             container.Register<IPathParameterMatcher, PathParameterMatcher>(new PerContainerLifetime());
+
+            container.Register<IPathParameterMatcherFactory, PathParameterMatcherFactory>(new PerContainerLifetime());
 
             container.GetInstance<ICoverageCalculator>().Calculate().Wait();
         }
