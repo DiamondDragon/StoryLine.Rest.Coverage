@@ -9,6 +9,7 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers.Helpers
 {
     public class OperationMatcher : IOperationMatcher
     {
+        private readonly IBodyParameterMatcher _bodyParameterMatcher;
         private readonly IHeaderParameterMatcher _headerParameterMatcher;
         private readonly IQueryStringParameterMatcher _queryStringParameterMatcher;
         private readonly OperationInfo _operation;
@@ -18,11 +19,13 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers.Helpers
             OperationInfo operation, 
             IPathPatternToRegexConverter pathPatternToRegexConverter,
             IQueryStringParameterMatcher queryStringParameterMatcher,
-            IHeaderParameterMatcher headerParameterMatcher)
+            IHeaderParameterMatcher headerParameterMatcher,
+            IBodyParameterMatcher bodyParameterMatcher)
         {
             if (pathPatternToRegexConverter == null)
                 throw new ArgumentNullException(nameof(pathPatternToRegexConverter));
 
+            _bodyParameterMatcher = bodyParameterMatcher ?? throw new ArgumentNullException(nameof(bodyParameterMatcher));
             _headerParameterMatcher = headerParameterMatcher ?? throw new ArgumentNullException(nameof(headerParameterMatcher));
             _queryStringParameterMatcher = queryStringParameterMatcher ?? throw new ArgumentNullException(nameof(queryStringParameterMatcher));
 
@@ -47,20 +50,14 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers.Helpers
             if (!RequestMatchesHeaderParameters(request.Headers))
                 return false;
 
-            if (!RequestMatchesBodyParameters(request.Body))
-                return false;
-
-            return true;
+            return RequestMatchesBodyParameters(request);
         }
 
-        private bool RequestMatchesBodyParameters(byte[] requestBody)
+        private bool RequestMatchesBodyParameters(Request request)
         {
             var hasBodyParameters = _operation.Parameters.Any(x => x.In.Equals("body") && x.Required);
 
-            if (!hasBodyParameters)
-                return true;
-
-            return requestBody?.Length > 0;
+            return !hasBodyParameters || _bodyParameterMatcher.HasParameter(request);
         }
 
         private bool RequestMatchesHttpMethod(string requestMethod)

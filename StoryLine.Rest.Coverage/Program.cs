@@ -46,6 +46,8 @@ namespace StoryLine.Rest.Coverage
 
             container.Register<IQueryStringParameterMatcher, QueryStringParameterMatcher>(new PerContainerLifetime());
             container.Register<IHeaderParameterMatcher, HeaderParameterMatcher>(new PerContainerLifetime());
+            container.Register<IBodyParameterMatcher, BodyParameterMatcher>(new PerContainerLifetime());
+            container.Register<IPathParameterMatcher, PathParameterMatcher>(new PerContainerLifetime());
 
             container.GetInstance<ICoverageCalculator>().Calculate().Wait();
         }

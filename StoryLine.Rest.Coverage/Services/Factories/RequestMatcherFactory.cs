@@ -6,6 +6,7 @@ namespace StoryLine.Rest.Coverage.Services.Factories
 {
     public class RequestMatcherFactory : IRequestMatcherFactory
     {
+        private readonly IBodyParameterMatcher _bodyParameterMatcher;
         private readonly IHeaderParameterMatcher _headerParameterMatcher;
         private readonly IQueryStringParameterMatcher _queryStringParameterMatcher;
         private readonly IPathPatternToRegexConverter _pathPatternToRegexConverter;
@@ -13,8 +14,10 @@ namespace StoryLine.Rest.Coverage.Services.Factories
         public RequestMatcherFactory(
             IPathPatternToRegexConverter pathPatternToRegexConverter,
             IQueryStringParameterMatcher queryStringParameterMatcher,
-            IHeaderParameterMatcher headerParameterMatcher)
+            IHeaderParameterMatcher headerParameterMatcher,
+            IBodyParameterMatcher bodyParameterMatcher)
         {
+            _bodyParameterMatcher = bodyParameterMatcher ?? throw new ArgumentNullException(nameof(bodyParameterMatcher));
             _headerParameterMatcher = headerParameterMatcher ?? throw new ArgumentNullException(nameof(headerParameterMatcher));
             _queryStringParameterMatcher = queryStringParameterMatcher ?? throw new ArgumentNullException(nameof(queryStringParameterMatcher));
             _pathPatternToRegexConverter = pathPatternToRegexConverter ?? throw new ArgumentNullException(nameof(pathPatternToRegexConverter));
@@ -29,7 +32,8 @@ namespace StoryLine.Rest.Coverage.Services.Factories
                 operation, 
                 _pathPatternToRegexConverter,
                 _queryStringParameterMatcher,
-                _headerParameterMatcher);
+                _headerParameterMatcher,
+                _bodyParameterMatcher);
         }
     }
 }

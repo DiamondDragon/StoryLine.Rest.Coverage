@@ -21,7 +21,8 @@ namespace StoryLine.Rest.Coverage.Tests.Services.Analyzers.Helpers
                 _operation, 
                 new PathPatternToRegexConverter(),
                 new QueryStringParameterMatcher(), 
-                new HeaderParameterMatcher());
+                new HeaderParameterMatcher(),
+                new BodyParameterMatcher());
         }
 
         [Fact]
