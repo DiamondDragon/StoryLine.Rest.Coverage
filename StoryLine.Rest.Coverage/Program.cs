@@ -4,6 +4,7 @@ using LightInject;
 using StoryLine.Rest.Coverage.Services;
 using StoryLine.Rest.Coverage.Services.Analyzers;
 using StoryLine.Rest.Coverage.Services.Analyzers.Helpers;
+using StoryLine.Rest.Coverage.Services.Analyzers.Matchers;
 using StoryLine.Rest.Coverage.Services.Content;
 using StoryLine.Rest.Coverage.Services.Factories;
 using StoryLine.Rest.Coverage.Services.Parsing.Responses;

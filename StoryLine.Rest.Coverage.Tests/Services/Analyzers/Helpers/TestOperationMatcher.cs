@@ -1,6 +1,7 @@
 ﻿using StoryLine.Rest.Coverage.Model.Response;
 using StoryLine.Rest.Coverage.Model.Swagger;
 using StoryLine.Rest.Coverage.Services.Analyzers.Helpers;
+using StoryLine.Rest.Coverage.Services.Analyzers.Matchers;
 using Xunit;
 
 namespace StoryLine.Rest.Coverage.Tests.Services.Analyzers.Helpers

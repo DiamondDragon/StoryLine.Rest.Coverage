@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace StoryLine.Rest.Coverage.Services.Analyzers.Helpers
+namespace StoryLine.Rest.Coverage.Services.Analyzers.Matchers
 {
     public class HeaderParameterMatcher : IHeaderParameterMatcher
     {

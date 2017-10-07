@@ -4,6 +4,7 @@ using System.Linq;
 using StoryLine.Rest.Coverage.Model.Response;
 using StoryLine.Rest.Coverage.Model.Swagger;
 using StoryLine.Rest.Coverage.Services.Analyzers.Helpers;
+using StoryLine.Rest.Coverage.Services.Analyzers.Matchers;
 
 namespace StoryLine.Rest.Coverage.Services.Analyzers
 {

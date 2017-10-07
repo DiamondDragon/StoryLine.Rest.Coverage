@@ -1,8 +1,7 @@
 ﻿using System;
 using StoryLine.Rest.Coverage.Model.Response;
-using StoryLine.Rest.Coverage.Model.Swagger;
 
-namespace StoryLine.Rest.Coverage.Services.Analyzers.Helpers
+namespace StoryLine.Rest.Coverage.Services.Analyzers.Matchers
 {
     public class BodyParameterMatcher : IBodyParameterMatcher
     {
