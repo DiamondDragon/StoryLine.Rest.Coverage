@@ -34,7 +34,7 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers
         {
             return new AnalysisReport
             {
-                Operation = _operation,
+                Operation = _operation.OperationdId,
                 TotalCount = 1,
                 CoveredCount = _matchingRespones.Count > 0 ? 1 : 0,
                 Errors = _matchingRespones.Count > 0 ? Enumerable.Empty<Error>() : new [] { CreateError() }

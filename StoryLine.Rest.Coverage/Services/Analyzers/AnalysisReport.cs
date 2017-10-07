@@ -6,7 +6,7 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers
 {
     public class AnalysisReport : IAnalysisReport
     {
-        public OperationInfo Operation { get; set; }
+        public string Operation { get; set; }
 
         public int TotalCount { get; set; }
         public int CoveredCount { get; set; }

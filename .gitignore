@@ -4,3 +4,4 @@
 project.lock.json
 **/bin/*
 **/obj/*
+/StoryLine.Rest.Coverage/report.json

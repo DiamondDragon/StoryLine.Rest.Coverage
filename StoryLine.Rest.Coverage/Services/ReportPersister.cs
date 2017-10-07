@@ -24,7 +24,7 @@ namespace StoryLine.Rest.Coverage.Services
             if (report == null)
                 throw new ArgumentNullException(nameof(report));
 
-            await File.WriteAllTextAsync(_outputFile, _serializer.Serialize(report));
+            await File.WriteAllTextAsync(_outputFile, _serializer.Serialize(((CompositeReport)report).Reports));
         }
     }
 }

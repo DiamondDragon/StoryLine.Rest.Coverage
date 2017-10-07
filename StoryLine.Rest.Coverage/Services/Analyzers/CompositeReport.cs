@@ -1,22 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using StoryLine.Rest.Coverage.Model.Swagger;
+using Newtonsoft.Json;
 
 namespace StoryLine.Rest.Coverage.Services.Analyzers
 {
     public class CompositeReport : IAnalysisReport
     {
-        private readonly IAnalysisReport[] _reports;
+        [JsonIgnore]
+        public IAnalysisReport[] Reports { get; }
 
         public CompositeReport(params IAnalysisReport[] reports)
         {
-            _reports = reports ?? throw new ArgumentNullException(nameof(reports));
+            Reports = reports ?? throw new ArgumentNullException(nameof(reports));
         }
 
-        public OperationInfo Operation => _reports[0].Operation;
-        public int TotalCount => _reports.Sum(x => x.TotalCount);
-        public int CoveredCount => _reports.Sum(x => x.CoveredCount);
-        public IEnumerable<Error> Errors => _reports.SelectMany(x => x.Errors);
+        public string Operation => Reports[0].Operation;
+        public int TotalCount => Reports.Sum(x => x.TotalCount);
+        public int CoveredCount => Reports.Sum(x => x.CoveredCount);
+        public IEnumerable<Error> Errors => Reports.SelectMany(x => x.Errors);
     }
 }
