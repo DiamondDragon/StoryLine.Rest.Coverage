@@ -44,6 +44,9 @@ namespace StoryLine.Rest.Coverage
             container.Register<IApiAnalyzerFactory, ApiAnalyzerFactory>();
             container.Register<IOperationAnalyzerFactory, OperationAnalyzerFactory>();
 
+            container.Register<IQueryStringParameterMatcher, QueryStringParameterMatcher>(new PerContainerLifetime());
+            container.Register<IHeaderParameterMatcher, HeaderParameterMatcher>(new PerContainerLifetime());
+
             container.GetInstance<ICoverageCalculator>().Calculate().Wait();
         }
     }

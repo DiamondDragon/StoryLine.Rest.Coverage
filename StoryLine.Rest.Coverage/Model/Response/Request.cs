@@ -36,6 +36,6 @@ namespace StoryLine.Rest.Coverage.Model.Response
         public string UrlPath { get; private set; }
 
         [JsonIgnore]
-        public IDictionary<string, StringValues> Query { get; private set; } = new Dictionary<string, StringValues>(StringComparer.InvariantCultureIgnoreCase);
+        public IReadOnlyDictionary<string, StringValues> Query { get; private set; } = new Dictionary<string, StringValues>(StringComparer.InvariantCultureIgnoreCase);
     }
 }

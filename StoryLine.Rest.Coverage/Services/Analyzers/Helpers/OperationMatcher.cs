@@ -9,13 +9,22 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers.Helpers
 {
     public class OperationMatcher : IOperationMatcher
     {
+        private readonly IHeaderParameterMatcher _headerParameterMatcher;
+        private readonly IQueryStringParameterMatcher _queryStringParameterMatcher;
         private readonly OperationInfo _operation;
         private readonly RegexInfo _regexInfo;
 
-        public OperationMatcher(OperationInfo operation, IPathPatternToRegexConverter pathPatternToRegexConverter)
+        public OperationMatcher(
+            OperationInfo operation, 
+            IPathPatternToRegexConverter pathPatternToRegexConverter,
+            IQueryStringParameterMatcher queryStringParameterMatcher,
+            IHeaderParameterMatcher headerParameterMatcher)
         {
             if (pathPatternToRegexConverter == null)
                 throw new ArgumentNullException(nameof(pathPatternToRegexConverter));
+
+            _headerParameterMatcher = headerParameterMatcher ?? throw new ArgumentNullException(nameof(headerParameterMatcher));
+            _queryStringParameterMatcher = queryStringParameterMatcher ?? throw new ArgumentNullException(nameof(queryStringParameterMatcher));
 
             _operation = operation ?? throw new ArgumentNullException(nameof(operation));
             _regexInfo = pathPatternToRegexConverter.Convert(operation.Path);
@@ -64,36 +73,18 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers.Helpers
             return _regexInfo.Pattern.Match(urlPath).Success;
         }
 
-        private bool RequestMatchesHeaderParameters(Dictionary<string, string[]> requestHeaders)
+        private bool RequestMatchesHeaderParameters(IReadOnlyDictionary<string, string[]> requestHeaders)
         {
-            foreach (var headerParameter in _operation.Parameters.Where(x => x.In.Equals("header", StringComparison.InvariantCultureIgnoreCase) && x.Required))
-            {
-                var header = requestHeaders.Keys.FirstOrDefault(x => x.Equals(headerParameter.Name, StringComparison.InvariantCultureIgnoreCase));
-
-                if (string.IsNullOrEmpty(header))
-                    return false;
-
-                if (string.IsNullOrEmpty(requestHeaders[header].FirstOrDefault()))
-                    return false;
-            }
-
-            return true;
+            return _operation.Parameters
+                .Where(x => x.In.Equals("header", StringComparison.InvariantCultureIgnoreCase) && x.Required)
+                .All(headerParameter => _headerParameterMatcher.HasParameter(headerParameter.Name, requestHeaders));
         }
 
-        private bool RequestMatchesQueryParameters(IDictionary<string, StringValues> requestQuery)
+        private bool RequestMatchesQueryParameters(IReadOnlyDictionary<string, StringValues> requestQuery)
         {
-            foreach (var headerParameter in _operation.Parameters.Where(x => x.In.Equals("header", StringComparison.InvariantCultureIgnoreCase) && x.Required))
-            {
-                var header = requestQuery.Keys.FirstOrDefault(x => x.Equals(headerParameter.Name, StringComparison.InvariantCultureIgnoreCase));
-
-                if (string.IsNullOrEmpty(header))
-                    return false;
-
-                if (string.IsNullOrEmpty(requestQuery[header].FirstOrDefault()))
-                    return false;
-            }
-
-            return true;
+            return _operation.Parameters
+                .Where(x => x.In.Equals("query", StringComparison.InvariantCultureIgnoreCase) && x.Required)
+                .All(headerParameter => _queryStringParameterMatcher.HasParameter(headerParameter.Name, requestQuery));
         }
     }
 }

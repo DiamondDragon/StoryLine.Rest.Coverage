@@ -16,12 +16,8 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers
 
         public override void Process(Response response)
         {
-            if (!_operationMatcher.IsMatch(response.Request))
-                return;
-
-
-
-            base.Process(response);
+            if (_operationMatcher.IsMatch(response.Request))
+                base.Process(response);
         }
     }
 }

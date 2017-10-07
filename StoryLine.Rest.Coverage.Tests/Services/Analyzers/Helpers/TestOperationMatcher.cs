@@ -17,7 +17,11 @@ namespace StoryLine.Rest.Coverage.Tests.Services.Analyzers.Helpers
                 Path = "/v1/clients/{clientId}/plans/{planId}"
             };
 
-            _underTest = new OperationMatcher(_operation, new PathPatternToRegexConverter());
+            _underTest = new OperationMatcher(
+                _operation, 
+                new PathPatternToRegexConverter(),
+                new QueryStringParameterMatcher(), 
+                new HeaderParameterMatcher());
         }
 
         [Fact]
