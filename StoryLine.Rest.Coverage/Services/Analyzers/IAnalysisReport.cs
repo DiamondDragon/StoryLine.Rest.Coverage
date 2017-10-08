@@ -1,13 +1,19 @@
 ﻿using System.Collections.Generic;
-using StoryLine.Rest.Coverage.Model.Swagger;
+using StoryLine.Rest.Coverage.Model.Response;
 
 namespace StoryLine.Rest.Coverage.Services.Analyzers
 {
     public interface IAnalysisReport
     {
-        string Operation { get; }
-        int TotalCount { get; }
-        int CoveredCount { get; }
-        IEnumerable<Error> Errors { get; }
+        string OperationId { get; }
+        string Path { get; }
+        string HttpMethod { get; }
+
+        string AnalyzerId { get; }
+        string AnalyzedCase { get; }
+        bool IsMandatoryCase { get; }
+        bool IsCovered { get; }
+
+        IEnumerable<Response> MatchingResponse { get; }
     }
 }

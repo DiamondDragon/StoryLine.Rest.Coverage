@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using StoryLine.Rest.Coverage.Model.Response;
 using StoryLine.Rest.Coverage.Model.Swagger;
 
@@ -30,23 +29,18 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers
                 _matchingRespones.Add(response);
         }
 
-        public IAnalysisReport GetReport()
+        public IEnumerable<IAnalysisReport> GetReports()
         {
-            return new AnalysisReport
+            yield return new AnalysisReport
             {
-                Operation = _operation.OperationdId,
-                TotalCount = 1,
-                CoveredCount = _matchingRespones.Count > 0 ? 1 : 0,
-                Errors = _matchingRespones.Count > 0 ? Enumerable.Empty<Error>() : new [] { CreateError() }
-            };
-        }
-
-        private Error CreateError()
-        {
-            return new Error
-            {
-                Id = "StatusCode",
-                Message = $"Neither of recorded tests produces response with status code {_statusCode}."
+                OperationId = _operation.OperationdId,
+                Path = _operation.Path,
+                HttpMethod = _operation.HttpMethod,
+                IsMandatoryCase = true,
+                AnalyzerId = nameof(ResponseStatusCodeAnalyzer),
+                IsCovered = _matchingRespones.Count > 0,
+                AnalyzedCase = $"Response HTTP status code equal to {_statusCode}",
+                MatchingResponse = _matchingRespones
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using StoryLine.Rest.Coverage.Exceptions;
 using StoryLine.Rest.Coverage.Services.Content;
@@ -54,7 +55,7 @@ namespace StoryLine.Rest.Coverage.Services
                 analyzer.Process(request);
             }
 
-            await _reportPersister.Save(analyzer.GetReport());
+            await _reportPersister.Save(analyzer.GetReports().ToArray());
         }
     }
 }

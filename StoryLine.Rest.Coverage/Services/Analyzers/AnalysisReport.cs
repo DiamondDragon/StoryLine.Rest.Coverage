@@ -1,15 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using StoryLine.Rest.Coverage.Model.Swagger;
+using Newtonsoft.Json;
+using StoryLine.Rest.Coverage.Model.Response;
 
 namespace StoryLine.Rest.Coverage.Services.Analyzers
 {
     public class AnalysisReport : IAnalysisReport
     {
-        public string Operation { get; set; }
+        public string OperationId { get; set; }
+        public string Path { get; set; }
+        public string HttpMethod { get; set; }
+        public string AnalyzerId { get; set; }
+        public string AnalyzedCase { get; set; }
+        public bool IsMandatoryCase { get; set; }
+        public bool IsCovered { get; set; }
 
-        public int TotalCount { get; set; }
-        public int CoveredCount { get; set; }
-        public IEnumerable<Error> Errors { get; set; } = Enumerable.Empty<Error>();
+        [JsonIgnore]
+        public IEnumerable<Response> MatchingResponse { get; set; } = Enumerable.Empty<Response>();
     }
 }

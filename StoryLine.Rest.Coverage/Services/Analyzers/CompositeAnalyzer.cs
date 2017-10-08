@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using StoryLine.Rest.Coverage.Model.Response;
 
@@ -21,9 +22,9 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers
             Array.ForEach(Analyzers, x => x.Process(response));
         }
 
-        public IAnalysisReport GetReport()
+        public IEnumerable<IAnalysisReport> GetReports()
         {
-            return new CompositeReport(Analyzers.Select(x => x.GetReport()).ToArray());
+            return Analyzers.SelectMany(x => x.GetReports());
         }
     }
 }

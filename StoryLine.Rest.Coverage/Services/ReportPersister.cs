@@ -19,12 +19,12 @@ namespace StoryLine.Rest.Coverage.Services
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
         }
 
-        public async Task Save(IAnalysisReport report)
+        public async Task Save(IAnalysisReport[] reports)
         {
-            if (report == null)
-                throw new ArgumentNullException(nameof(report));
+            if (reports == null)
+                throw new ArgumentNullException(nameof(reports));
 
-            await File.WriteAllTextAsync(_outputFile, _serializer.Serialize(((CompositeReport)report).Reports));
+            await File.WriteAllTextAsync(_outputFile, _serializer.Serialize(reports));
         }
     }
 }

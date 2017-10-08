@@ -38,22 +38,18 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers
                 _matchingResponses.Add(response);
         }
 
-        public IAnalysisReport GetReport()
+        public IEnumerable<IAnalysisReport> GetReports()
         {
-            return new AnalysisReport
+            yield return new AnalysisReport
             {
-                Operation = _operation.OperationdId,
-                CoveredCount = _matchingResponses.Count > 0 ? 1 : 0,
-                TotalCount = 1,
-                Errors = _matchingResponses.Count > 0 ? Enumerable.Empty<Error>() :
-                    new[]
-                    {
-                        new Error
-                        {
-                            Id = "ResponseContentType",
-                            Message = $"No responses produce content type $\"{_contentType}\""
-                        }
-                    }
+                OperationId = _operation.OperationdId,
+                Path = _operation.Path,
+                HttpMethod = _operation.HttpMethod,
+                IsMandatoryCase = true,
+                AnalyzerId = nameof(ResponseContentTypeAnalyzer),
+                IsCovered = _matchingResponses.Count > 0,
+                AnalyzedCase = $"Response \"Content-Type\" header equal to \"{_contentType}\"",
+                MatchingResponse = _matchingResponses
             };
         }
     }

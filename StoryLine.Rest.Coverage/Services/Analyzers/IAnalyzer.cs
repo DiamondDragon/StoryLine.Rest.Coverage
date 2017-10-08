@@ -1,10 +1,11 @@
-﻿using StoryLine.Rest.Coverage.Model.Response;
+﻿using System.Collections.Generic;
+using StoryLine.Rest.Coverage.Model.Response;
 
 namespace StoryLine.Rest.Coverage.Services.Analyzers
 {
     public interface IAnalyzer
     {
         void Process(Response response);
-        IAnalysisReport GetReport();
+        IEnumerable<IAnalysisReport> GetReports();
     }
 }

@@ -38,7 +38,7 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers
             }
         }
 
-        private readonly List<Response> _matchingRequests = new List<Response>();
+        private readonly List<Response> _matchingResponse = new List<Response>();
 
         public ParameterAnalyzer(
             OperationInfo opetionInfo,
@@ -68,21 +68,23 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers
                 return;
 
             if (ParamTypePredicates[_parameter.In](this, response.Request))
-                _matchingRequests.Add(response);
+                _matchingResponse.Add(response);
         }
 
-        public IAnalysisReport GetReport()
+        public IEnumerable<IAnalysisReport> GetReports()
         {
-            return new AnalysisReport
+            var mandatoryType = _parameter.Required ? "Mandatory" : "Optional";
+
+            yield return new AnalysisReport
             {
-                Operation = _operation.OperationdId,
-                CoveredCount = _matchingRequests.Count > 0 ? 1 : 0,
-                TotalCount = 1,
-                Errors = _matchingRequests.Count > 0 ? Enumerable.Empty<Error>() : new[] { new Error
-                {
-                    Id = "ParameterAnalysis",
-                    Message = $"No requests use parameter \"{_parameter.Name}\" of type \"{_parameter.In}\"" }
-                } 
+                OperationId = _operation.OperationdId,
+                Path = _operation.Path,
+                HttpMethod = _operation.HttpMethod,
+                AnalyzedCase = $"{mandatoryType} parameter \"{_parameter.Name}\" of type \"{_parameter.In}\"",
+                IsMandatoryCase = _parameter.Required,
+                AnalyzerId = nameof(ParameterAnalyzer),
+                IsCovered = _matchingResponse.Count > 0,
+                MatchingResponse = _matchingResponse
             };
         }
     }

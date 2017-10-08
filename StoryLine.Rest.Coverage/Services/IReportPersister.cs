@@ -5,6 +5,6 @@ namespace StoryLine.Rest.Coverage.Services
 {
     public interface IReportPersister
     {
-        Task Save(IAnalysisReport report);
+        Task Save(IAnalysisReport[] report);
     }
 }
