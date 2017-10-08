@@ -6,6 +6,7 @@ using StoryLine.Rest.Coverage.Services.Content;
 using StoryLine.Rest.Coverage.Services.Factories;
 using StoryLine.Rest.Coverage.Services.Parsing.Responses;
 using StoryLine.Rest.Coverage.Services.Parsing.Swagger;
+using StoryLine.Rest.Coverage.Services.Persisters;
 
 namespace StoryLine.Rest.Coverage.Services
 {
@@ -55,7 +56,7 @@ namespace StoryLine.Rest.Coverage.Services
                 analyzer.Process(request);
             }
 
-            await _reportPersister.Save(analyzer.GetReports().ToArray());
+            await _reportPersister.Save(analyzer.GetReports());
         }
     }
 }

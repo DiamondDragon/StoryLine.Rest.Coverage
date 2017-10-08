@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using StoryLine.Rest.Coverage.Services.Analyzers;
 
-namespace StoryLine.Rest.Coverage.Services
+namespace StoryLine.Rest.Coverage.Services.Persisters
 {
     public class ReportPersister : IReportPersister
     {
@@ -19,7 +20,7 @@ namespace StoryLine.Rest.Coverage.Services
             _serializer = serializer ?? throw new ArgumentNullException(nameof(serializer));
         }
 
-        public async Task Save(IAnalysisReport[] reports)
+        public async Task Save(IEnumerable<IAnalysisReport> reports)
         {
             if (reports == null)
                 throw new ArgumentNullException(nameof(reports));

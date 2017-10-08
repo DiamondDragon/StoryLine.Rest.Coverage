@@ -8,8 +8,8 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers
     public class AnalysisReport : IAnalysisReport
     {
         public string OperationId { get; set; }
-        public string Path { get; set; }
         public string HttpMethod { get; set; }
+        public string Path { get; set; }
         public string AnalyzerId { get; set; }
         public string AnalyzedCase { get; set; }
         public bool IsMandatoryCase { get; set; }

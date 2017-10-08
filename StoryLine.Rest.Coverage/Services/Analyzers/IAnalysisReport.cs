@@ -6,8 +6,8 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers
     public interface IAnalysisReport
     {
         string OperationId { get; }
-        string Path { get; }
         string HttpMethod { get; }
+        string Path { get; }
 
         string AnalyzerId { get; }
         string AnalyzedCase { get; }
