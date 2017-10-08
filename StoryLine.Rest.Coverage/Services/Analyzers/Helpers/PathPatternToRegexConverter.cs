@@ -28,7 +28,7 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers.Helpers
 
             parameterMap.Add(parameterName, match.Value.Substring(1, match.Value.Length - 2));
 
-            return $"(?<{parameterName}>.+)";
+            return $"(?<{parameterName}>[^\\/]+)";
         }
     }
 }

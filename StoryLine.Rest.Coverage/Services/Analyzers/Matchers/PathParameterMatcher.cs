@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using StoryLine.Rest.Coverage.Services.Analyzers.Helpers;
 
 namespace StoryLine.Rest.Coverage.Services.Analyzers.Matchers
@@ -19,16 +20,16 @@ namespace StoryLine.Rest.Coverage.Services.Analyzers.Matchers
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentException("Value cannot be null or empty.", nameof(path));
 
-            if (!_regexInfo.GroupToParamMapping.ContainsKey(parameterName))
+            var mapping = _regexInfo.GroupToParamMapping.FirstOrDefault(x => x.Value.Equals(parameterName, StringComparison.InvariantCultureIgnoreCase));
+
+            if (string.IsNullOrEmpty(mapping.Key))
                 return false;
 
             var match = _regexInfo.Pattern.Match(path);
             if (!match.Success)
                 return false;
 
-            var groupName = _regexInfo.GroupToParamMapping[parameterName];
-
-            return !string.IsNullOrEmpty(match.Groups[groupName].Value);
+            return !string.IsNullOrEmpty(match.Groups[mapping.Key].Value);
         }
     }
 }
