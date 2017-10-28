@@ -7,11 +7,13 @@ using StoryLine.Rest.Coverage.Services.Factories;
 using StoryLine.Rest.Coverage.Services.Parsing.Responses;
 using StoryLine.Rest.Coverage.Services.Parsing.Swagger;
 using StoryLine.Rest.Coverage.Services.Persisters;
+using StoryLine.Rest.Coverage.Services.ResponseFilters;
 
 namespace StoryLine.Rest.Coverage.Services
 {
     public class CoverageCalculator : ICoverageCalculator
     {
+        private readonly IResponseFilter _responseFilter;
         private readonly IReportPersister _reportPersister;
         private readonly IApiAnalyzerFactory _analyzerFactory;
         private readonly IResponseLogParser _responseLogParser;
@@ -25,7 +27,8 @@ namespace StoryLine.Rest.Coverage.Services
             IResponseLogProvider responseLogProvider,
             IResponseLogParser responseLogParser,
             IApiAnalyzerFactory analyzerFactory,
-            IReportPersister reportPersister)
+            IReportPersister reportPersister,
+            IResponseFilter responseFilter)
         {
             _swaggerProvider = swaggerProvider ?? throw new ArgumentNullException(nameof(swaggerProvider));
             _swaggerParser = swaggerParser ?? throw new ArgumentNullException(nameof(swaggerParser));
@@ -33,6 +36,7 @@ namespace StoryLine.Rest.Coverage.Services
             _responseLogParser = responseLogParser ?? throw new ArgumentNullException(nameof(responseLogParser));
             _analyzerFactory = analyzerFactory ?? throw new ArgumentNullException(nameof(analyzerFactory));
             _reportPersister = reportPersister ?? throw new ArgumentNullException(nameof(reportPersister));
+            _responseFilter = responseFilter ?? throw new ArgumentNullException(nameof(responseFilter));
         }
 
         public async Task Calculate()
@@ -51,7 +55,7 @@ namespace StoryLine.Rest.Coverage.Services
 
             var analyzer = _analyzerFactory.Create(model);
 
-            foreach (var request in responseLog.Responses)
+            foreach (var request in responseLog.Responses.Where(_responseFilter.IsValid))
             {
                 analyzer.Process(request);
             }

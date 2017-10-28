@@ -10,6 +10,7 @@ using StoryLine.Rest.Coverage.Services.Factories;
 using StoryLine.Rest.Coverage.Services.Parsing.Responses;
 using StoryLine.Rest.Coverage.Services.Parsing.Swagger;
 using StoryLine.Rest.Coverage.Services.Persisters;
+using StoryLine.Rest.Coverage.Services.ResponseFilters;
 
 namespace StoryLine.Rest.Coverage
 {
@@ -37,6 +38,8 @@ namespace StoryLine.Rest.Coverage
                     p => !p.IsCovered
                     ));
 
+
+            container.Register<IResponseFilter, NullResponseFilter>();
             container.Register<ICoverageCalculator, CoverageCalculator>();
             container.Register<ISwaggerParser, SwaggerParser>();
             container.Register<IJsonSerializer, JsonSerializer>();
