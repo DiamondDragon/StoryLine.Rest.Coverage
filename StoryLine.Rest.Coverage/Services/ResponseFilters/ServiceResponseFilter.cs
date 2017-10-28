@@ -20,7 +20,7 @@ namespace StoryLine.Rest.Coverage.Services.ResponseFilters
             if (response == null)
                 throw new ArgumentNullException(nameof(response));
 
-            if (response.Request == null)
+            if (string.IsNullOrWhiteSpace(response.Request?.Service))
                 return false;
 
             return response.Request.Service.Equals(_serviceName, StringComparison.OrdinalIgnoreCase);

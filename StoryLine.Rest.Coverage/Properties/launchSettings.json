@@ -2,7 +2,7 @@
   "profiles": {
     "StoryLine.Rest.Coverage": {
       "commandName": "Project",
-      "commandLineArgs": "\"d:\\Ebanx-Swagger.json\"  \"d:\\responses-2017-09-30.txt\" \"report.json\""
+      "commandLineArgs": "-s \"d:\\Ebanx-Swagger.json\"  -l \"d:\\responses-2017-09-30.txt\" -o \"report.json\" -f \"service\" -a \"Ebanx\""
     }
   }
 }
