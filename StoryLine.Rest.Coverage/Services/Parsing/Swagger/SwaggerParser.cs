@@ -9,10 +9,12 @@ namespace StoryLine.Rest.Coverage.Services.Parsing.Swagger
 {
     public class SwaggerParser : ISwaggerParser
     {
+        private readonly IFullUrlResolver _fullUrlResolver;
         private readonly IJsonSerializer _jsonSerializer;
 
-        public SwaggerParser(IJsonSerializer jsonSerializer)
+        public SwaggerParser(IJsonSerializer jsonSerializer, IFullUrlResolver fullUrlResolver)
         {
+            _fullUrlResolver = fullUrlResolver ?? throw new ArgumentNullException(nameof(fullUrlResolver));
             _jsonSerializer = jsonSerializer ?? throw new ArgumentNullException(nameof(jsonSerializer));
         }
 
@@ -30,21 +32,21 @@ namespace StoryLine.Rest.Coverage.Services.Parsing.Swagger
             };
         }
 
-        private static OperationInfo[] GetOperationList(SwaggerModel model)
+        private OperationInfo[] GetOperationList(SwaggerModel model)
         {
             return 
                 (from path in model.Paths
                  from operation in path.Value
-                 select GetOperation(path.Key, operation.Key, operation.Value))
+                 select GetOperation(model.BasePath, path.Key, operation.Key, operation.Value))
                 .ToArray();
         }
 
-        private static OperationInfo GetOperation(string path, string httpMethod, OperationModel operation)
+        private OperationInfo GetOperation(string basePath, string path, string httpMethod, OperationModel operation)
         {
             return new OperationInfo
             {
                 HttpMethod = httpMethod,
-                Path = path,
+                Path = _fullUrlResolver.Resolve(basePath, path),
                 Consumes = operation.Consumes,
                 OperationdId = operation.OperationId,
                 Produces = operation.Produces,

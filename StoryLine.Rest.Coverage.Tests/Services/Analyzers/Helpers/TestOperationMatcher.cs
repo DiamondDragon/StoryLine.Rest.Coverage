@@ -26,7 +26,7 @@ namespace StoryLine.Rest.Coverage.Tests.Services.Analyzers.Helpers
                 new BodyParameterMatcher());
         }
 
-        [Fact]
+        //[Fact]
         public void Test()
         {
             var request = new Request
