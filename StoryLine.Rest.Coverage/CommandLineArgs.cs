@@ -20,5 +20,8 @@ namespace StoryLine.Rest.Coverage
 
         [ValueArgument(typeof(string), 'a', "argument", Description = "Filter argument to use")]
         public string FilterArgument { get; set; }
+
+        [EnumeratedValueArgument(typeof(string), 'r', "report", AllowedValues = "notCoveredOnly;coveredOnly;all", Description = "Type of report to produce")]
+        public string ReportType { get; set; }
     }
 }

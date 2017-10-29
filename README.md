@@ -27,4 +27,5 @@ Here are evailable parameters:
         -o, --output... Location to save results
         -f, --filter[optional]... Specifies type of filter to use
         -a, --argument[optional]... Filter argument to use
+        -r, --report[optional]... Type of report to produce
 ```

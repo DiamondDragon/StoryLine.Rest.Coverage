@@ -7,7 +7,7 @@
     <PackageId>StoryLine.Rest.Coverage</PackageId>    
     <PackageType>DotnetCliTool</PackageType>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.1.0</Version>
+    <Version>0.2.0</Version>
 
     <PackageLicenseUrl>https://github.com/DiamondDragon/StoryLine.Rest.Coverage/blob/master/License.txt</PackageLicenseUrl>
     <Copyright>Andrei Salanoi &lt;diamond_dragon@tut.by&gt;</Copyright>
@@ -15,6 +15,9 @@
     <RepositoryUrl>https://github.com/DiamondDragon/StoryLine.Rest.Coverage</RepositoryUrl>
     <PackageTags>test testing tdd framework fluent assert core .netcore netcore microservice coverage</PackageTags>
     <Description>Command line tool used to measure REST API test coverage. Tool takes StoryLine.Rest tests execution report and compares it to API information stored in Swagger document.</Description>
+    <Authors>StoryLine.Rest.Coverage</Authors>
+    <Company>StoryLine.Rest.Coverage</Company>
+    <Product>StoryLine.Rest.Coverage</Product>
 
   </PropertyGroup>
 

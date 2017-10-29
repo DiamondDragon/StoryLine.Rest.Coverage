@@ -59,13 +59,28 @@ namespace StoryLine.Rest.Coverage
             container.Register<IReportPersister>(x =>
                 new FilteringPersister(
                     new ReportPersister(parameters.OutputFilePath, x.GetInstance<IJsonSerializer>()),
-                    p => !p.IsCovered
+                    GetResultFilter(parameters)
                 ));
             container.Register(x =>
                 (parameters.Filter ?? string.Empty).Equals("service", StringComparison.OrdinalIgnoreCase)
                     ? (IResponseFilter) new ServiceResponseFilter(parameters.FilterArgument)
                     : new NullResponseFilter()
             );
+        }
+
+        private static Func<IAnalysisReport, bool> GetResultFilter(CommandLineArgs parameters)
+        {
+            if (string.IsNullOrWhiteSpace(parameters.ReportType))
+                return x => true;
+
+            switch (parameters.ReportType.ToLower())
+            {
+                case "all": return x => true;
+                case "notcoveredonly": return x => !x.IsCovered;
+                case "coveredonly": return x => x.IsCovered;
+            }
+
+            throw new ArgumentOutOfRangeException("Unknown report type: " + parameters.ReportType);
         }
     }
 }
