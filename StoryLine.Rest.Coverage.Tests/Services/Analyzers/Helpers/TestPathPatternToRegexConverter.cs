@@ -20,7 +20,7 @@ namespace StoryLine.Rest.Coverage.Tests.Services.Analyzers.Helpers
         {
             _underTest.Convert("/v1/clients/{clientId}").ShouldBeEquivalentTo(
                 new RegexInfo(
-                    new Regex("/v1/clients/(?<p0>.+)", RegexOptions.Singleline | RegexOptions.IgnoreCase),
+                    new Regex("/v1/clients/(?<p0>[^\\/]+)", RegexOptions.Singleline | RegexOptions.IgnoreCase),
                     new Dictionary<string, string>
                     {
                         ["p0"] = "clientId"
@@ -32,7 +32,7 @@ namespace StoryLine.Rest.Coverage.Tests.Services.Analyzers.Helpers
         {
             _underTest.Convert("/v1/clients/{clientId}/plans/{planId}/subplans/{subPlanId}").ShouldBeEquivalentTo(
                 new RegexInfo(
-                    new Regex("/v1/clients/(?<p0>.+)/plans/(?<p1>.+)/subplans/(?<p2>.+)", RegexOptions.Singleline | RegexOptions.IgnoreCase),
+                    new Regex("/v1/clients/(?<p0>[^\\/]+)/plans/(?<p1>[^\\/]+)/subplans/(?<p2>[^\\/]+)", RegexOptions.Singleline | RegexOptions.IgnoreCase),
                     new Dictionary<string, string>
                     {
                         ["p0"] = "clientId",
